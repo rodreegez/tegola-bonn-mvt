@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>MNB Tegola Demo</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css" rel="stylesheet" />
+<style>
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  mapboxgl.accessToken = 'pk.your.api.key';
+
+  var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/streets-v11', // style URL
+    center: [7.113178, 50.728446], //coordinates the map will center on initially
+    zoom: 14 // starting zoom
+  });
+
+  map.on('load', function () { 
+    map.addSource('bonn', {
+      'type': 'vector',
+      "tiles": ["http://localhost:8080/maps/bonn/{z}/{x}/{y}.vector.pbf?"],
+      "tolerance": 0
+    });
+
+    map.addLayer({
+      "id": "main_roads",
+      "source": "bonn",
+      "source-layer": "main_roads",
+      "type": "fill",
+      "paint": {
+        "fill-color": "#000000",
+        "fill-opacity": 1.0
+      }
+    });
+
+    map.addLayer({
+      "id": "road",
+      "source": "bonn",
+      "source-layer": "road",
+      "type": "fill",
+      "paint": {
+        "fill-color": "#000000",
+        "fill-opacity": 1.0
+      }
+    });
+
+    map.addLayer({
+      "id": "lakes",
+      "source": "bonn",
+      "source-layer": "lakes",
+      "type": "fill",
+      "paint": {
+        "fill-color": "#000000",
+        "fill-opacity": 1.0
+      }
+    });
+
+    map.on('zoom', function () {
+      console.log(map.getZoom());
+    });
+  });
+</script>
+ 
+</body>
+</html>
